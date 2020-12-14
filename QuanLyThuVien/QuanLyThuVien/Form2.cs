@@ -55,12 +55,19 @@ namespace QuanLyThuVien
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 203);
+
+            pn_muonsach.Visible = true;
+            pn_muonsach.Dock = DockStyle.Fill;
+            panelHV.Visible = false;
         }
 
         private void btn_trasach_Click(object sender, EventArgs e)
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 270);
+
+            pn_TraSach.Visible = true;
+            pn_TraSach.Dock = DockStyle.Fill;
         }
 
         private void btn_exit_Click(object sender, EventArgs e)
@@ -449,6 +456,8 @@ namespace QuanLyThuVien
 
         private void Form2_Load_1(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'quanlyThuvienDataSet1.SACH' table. You can move, or remove it, as needed.
+            this.sACHTableAdapter1.Fill(this.quanlyThuvienDataSet1.SACH);
             while (data_phieumuon.Rows.Count != 0)
             {
                 data_phieumuon.Rows.RemoveAt(0);
@@ -456,7 +465,7 @@ namespace QuanLyThuVien
             using (ketnoi = new SqlConnection(chuoiketnoi))
             {
                 ketnoi.Open();
-                SqlCommand command = new SqlCommand("select MAPHIEU, MASACH, TRANGTHAI, NGAYHENTRA from MUONSACH where NGAYTRA is null", ketnoi);
+                SqlCommand command = new SqlCommand("select MAPHIEU, MASACH, TRANGTHAI, NGAYHENTRA from MUONSACH where NGAYHENTRA is null", ketnoi);
                 SqlDataReader data = command.ExecuteReader(CommandBehavior.CloseConnection);
                 if (data.HasRows)
                 {
@@ -504,6 +513,73 @@ namespace QuanLyThuVien
         private void mUONSACHBindingSource_BindingComplete(object sender, BindingCompleteEventArgs e)
         {
 
+        }
+
+        private void dtgv_muonsach_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dtgv_muonsach.Rows[e.RowIndex].Cells[2].Value.ToString() != "Còn" && e.ColumnIndex == 7)
+            {
+                MessageBox.Show("Sách đã hết!");
+            }
+            else
+            {
+                int a = e.ColumnIndex;
+                if (a < 7)
+                {
+                    tb_masach_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[0].Value.ToString();
+                    tb_tensach_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[1].Value.ToString();
+                    tb_trangthai_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[2].Value.ToString();
+                    tb_soluong_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[3].Value.ToString();
+                    tb_tennxb_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[4].Value.ToString();
+                    tb_tentacgia_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[5].Value.ToString();
+                    tb_madausach_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[6].Value.ToString();
+                }
+                else
+                {
+                    DialogResult result = MessageBox.Show("Bạn có chắc muốn mượn sách?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.Yes)
+                    {
+                        pn_add_soluong.Visible = true;
+
+                        tb_masach_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[0].Value.ToString();
+                        tb_soluong_muonsach.Text = dtgv_muonsach.Rows[e.RowIndex].Cells[3].Value.ToString();
+                        tb_ma_soluongmuon.Text = tb_masach_muonsach.Text;
+                        lb_soluong_con.Text = tb_soluong_muonsach.Text;
+
+                        int num1 = Int32.Parse(tb_soluong_muonsach.Text.ToString());
+                        for (int i = 1; i <= num1; i++)
+                        {
+                            lstbx_soluongmuon.Items.Add(i);
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        private void btn_xacnhan_muon_Click(object sender, EventArgs e)
+        {
+            using (ketnoi = new SqlConnection(chuoiketnoi))
+            {
+                ketnoi.Open();
+
+                string count1 = "1";
+                string count2 = lb_soluong_con.Text.ToString();
+                int num1 = Int32.Parse(count1);
+                int num2 = Int32.Parse(count2);
+                int num = num2 - num1;
+                sql = "update sach set soluong = " + num + " where MASACH = '" + tb_ma_soluongmuon.Text.ToString() + "'";
+                thuchien = new SqlCommand(sql, ketnoi);
+                thuchien.ExecuteNonQuery();
+            }
+            lstbx_soluongmuon.Items.Clear();
+            pn_add_soluong.Visible = false;
+        }
+
+        private void btn_huy_muon_Click(object sender, EventArgs e)
+        {
+            pn_add_soluong.Visible = false;
         }
     }
 }
