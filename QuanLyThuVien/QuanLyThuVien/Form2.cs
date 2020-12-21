@@ -31,7 +31,7 @@ namespace QuanLyThuVien
             ketnoi = new SqlConnection(chuoiketnoi);
             //Hienthi();
         }
-        private void btn_hocvien_Click(object sender, EventArgs e)
+        private void btn_hocvien_Click(object sender, EventArgs e) // button hoc vien
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 2);
@@ -39,19 +39,19 @@ namespace QuanLyThuVien
             panelHV.Dock = DockStyle.Fill;
         }
 
-        private void btn_dausach_Click(object sender, EventArgs e)
+        private void btn_dausach_Click(object sender, EventArgs e) // button dau sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 69);
         }
 
-        private void btn_sach_Click(object sender, EventArgs e)
+        private void btn_sach_Click(object sender, EventArgs e) // button sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 136);
         }
 
-        private void btn_muonsach_Click(object sender, EventArgs e)
+        private void btn_muonsach_Click(object sender, EventArgs e) // muon sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 203);
@@ -61,7 +61,7 @@ namespace QuanLyThuVien
             panelHV.Visible = false;
         }
 
-        private void btn_trasach_Click(object sender, EventArgs e)
+        private void btn_trasach_Click(object sender, EventArgs e) // tra sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 270);
@@ -70,7 +70,7 @@ namespace QuanLyThuVien
             pn_TraSach.Dock = DockStyle.Fill;
         }
 
-        private void btn_exit_Click(object sender, EventArgs e)
+        private void btn_exit_Click(object sender, EventArgs e) // thoat
         {
             this.Dispose();
         }
@@ -175,7 +175,7 @@ namespace QuanLyThuVien
 
         }
 
-        private void btnXoaHv_Click(object sender, EventArgs e)
+        private void btnXoaHv_Click(object sender, EventArgs e)    // chuc nang xoa hoc vien
         {
             ketnoi = new SqlConnection(chuoiketnoi);
             try
@@ -215,7 +215,7 @@ namespace QuanLyThuVien
             panel_themthongtin_HV.Visible = false;
         }
 
-        private void btnThemNv_Click(object sender, EventArgs e)
+        private void btnThemNv_Click(object sender, EventArgs e)  // chuc nang them nhan vien
         {
             grb_TK.Visible = false;
             txtThem_mahv.Text = null;
@@ -232,7 +232,7 @@ namespace QuanLyThuVien
         {
             Hienthi();
         }
-        public void Hienthi()
+        public void Hienthi()                           // Hien thi danh sach hoc vien
         {
             listViewDSHV.Items.Clear();
             ketnoi = new SqlConnection(chuoiketnoi);
@@ -264,7 +264,7 @@ namespace QuanLyThuVien
             grb_TK.Visible = true;
         }
 
-        private void btnCap_nhat_Hocvien_Click(object sender, EventArgs e)
+        private void btnCap_nhat_Hocvien_Click(object sender, EventArgs e)   // cap nhat dan sach hoc vien
         {
             ketnoi = new SqlConnection(chuoiketnoi);
             ketnoi.Open();
@@ -322,7 +322,7 @@ namespace QuanLyThuVien
             ckbNam_themHv.Checked = false;
         }
 
-        private void btnThem_nv_Click(object sender, EventArgs e)
+        private void btnThem_nv_Click(object sender, EventArgs e)   // Chuc nang them nhan vien
         {
             ketnoi = new SqlConnection(chuoiketnoi);
             ketnoi.Open();
@@ -364,7 +364,7 @@ namespace QuanLyThuVien
             grb_TK.Visible = true;
         }
 
-        private void btnTimKiem_Click(object sender, EventArgs e)
+        private void btnTimKiem_Click(object sender, EventArgs e)  // chuc nang tim kiem hoc vien
         {
             if (txtTimkiem.Text == null)
             {
@@ -492,7 +492,7 @@ namespace QuanLyThuVien
             }
         }
 
-        private void btn_OKtrasach_Click(object sender, EventArgs e)
+        private void btn_OKtrasach_Click(object sender, EventArgs e)   /// tra sach
         {
             pn_xacnhantrasach.Visible = false;
             using (ketnoi = new SqlConnection(chuoiketnoi))
@@ -515,7 +515,7 @@ namespace QuanLyThuVien
 
         }
 
-        private void dtgv_muonsach_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dtgv_muonsach_CellContentClick(object sender, DataGridViewCellEventArgs e)   // muon sach
         {
             if (dtgv_muonsach.Rows[e.RowIndex].Cells[2].Value.ToString() != "Còn" && e.ColumnIndex == 7)
             {
@@ -558,7 +558,7 @@ namespace QuanLyThuVien
             }
         }
 
-        private void btn_xacnhan_muon_Click(object sender, EventArgs e)
+        private void btn_xacnhan_muon_Click(object sender, EventArgs e)   // xac nhan muon
         {
             using (ketnoi = new SqlConnection(chuoiketnoi))
             {
