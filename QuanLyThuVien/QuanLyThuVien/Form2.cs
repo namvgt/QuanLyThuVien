@@ -18,7 +18,11 @@ namespace QuanLyThuVien
         {
             InitializeComponent();
             panelHV.Visible = false;
-        }
+               pn_TraSach.Visible = false;
+               pn_muonsach.Visible = false;
+               panelSACH.Visible = false;
+               pn_DauSach.Visible = false;
+          }
         string sql;
         string chuoiketnoi = System.Configuration.ConfigurationSettings.AppSettings["Main.ConnectionString"];
         SqlConnection ketnoi;
@@ -36,27 +40,49 @@ namespace QuanLyThuVien
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 2);
             panelHV.Visible = true;
-            panelHV.Dock = DockStyle.Fill;
+               pn_TraSach.Visible = false;
+               pn_muonsach.Visible = false;
+               panelSACH.Visible = false;
+               pn_DauSach.Visible = false;
+               panelHV.Dock = DockStyle.Fill;
+            
         }
 
         private void btn_dausach_Click(object sender, EventArgs e) // button dau sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 69);
-        }
+               panelHV.Visible = false;
+               pn_TraSach.Visible = false;
+               pn_muonsach.Visible = false;
+               panelSACH.Visible = false;
+               pn_DauSach.Visible = true;
+               pn_DauSach.Dock = DockStyle.Fill;
+          }
 
         private void btn_sach_Click(object sender, EventArgs e) // button sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 136);
-        }
+               panelHV.Visible = false;
+               pn_TraSach.Visible = false;
+               pn_muonsach.Visible = false;
+               panelSACH.Visible = true;
+               pn_DauSach.Visible = false;
+               panelSACH.Dock = DockStyle.Fill;
+          }
 
         private void btn_muonsach_Click(object sender, EventArgs e) // muon sach
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 203);
-
-            pn_muonsach.Visible = true;
+               panelHV.Visible = false;
+               pn_TraSach.Visible = false;
+               
+               panelSACH.Visible = false;
+               pn_DauSach.Visible = false;
+               
+               pn_muonsach.Visible = true;
             pn_muonsach.Dock = DockStyle.Fill;
             panelHV.Visible = false;
         }
@@ -65,8 +91,13 @@ namespace QuanLyThuVien
         {
             lb_control.Visible = true;
             lb_control.Location = new Point(0, 270);
-
-            pn_TraSach.Visible = true;
+               panelHV.Visible = false;
+               
+               pn_muonsach.Visible = false;
+               panelSACH.Visible = false;
+               pn_DauSach.Visible = false;
+               
+               pn_TraSach.Visible = true;
             pn_TraSach.Dock = DockStyle.Fill;
         }
 
@@ -465,14 +496,17 @@ namespace QuanLyThuVien
             using (ketnoi = new SqlConnection(chuoiketnoi))
             {
                 ketnoi.Open();
-                SqlCommand command = new SqlCommand("select MAPHIEU, MASACH, TRANGTHAI, NGAYHENTRA from MUONSACH where NGAYHENTRA is null", ketnoi);
+                SqlCommand command = new SqlCommand("select MAPHIEU, MASACH, TRANGTHAI, NGAYHENTRA from MUONSACH where NGAYTRA is null", ketnoi);
                 SqlDataReader data = command.ExecuteReader(CommandBehavior.CloseConnection);
+                DateTime time;
                 if (data.HasRows)
                 {
                     while (data.Read())
                     {
-                        data_phieumuon.Rows.Add(data[0].ToString(), data[1].ToString(), data[2].ToString(), data[3].ToString());
+                        time = (DateTime)data[3];
+                        data_phieumuon.Rows.Add(data[0].ToString(), data[1].ToString(), data[2].ToString(), time.ToString("dd/MM/yyyy"));
                     }
+                        
                 }
             }
         }
@@ -728,9 +762,6 @@ namespace QuanLyThuVien
             i = 0;
             while (docdulieu.Read())
             {
-
-
-
                 listViewDSSACH.Items.Add(docdulieu[0].ToString());
                 listViewDSSACH.Items[i].SubItems.Add(docdulieu[1].ToString());
                 listViewDSSACH.Items[i].SubItems.Add(docdulieu[2].ToString());
@@ -820,5 +851,182 @@ namespace QuanLyThuVien
                 ketnoi.Close();
             }
         }
-    }
+
+          
+          public void HienthiDausach()
+          {
+               listViewDauSach.Items.Clear();
+               ketnoi = new SqlConnection(chuoiketnoi);
+               ketnoi.Open();
+               sql = "SELECT * FROM DAUSACH";
+               thuchien = new SqlCommand(sql, ketnoi);
+               docdulieu = thuchien.ExecuteReader();
+               i = 0;
+               while (docdulieu.Read())
+               {
+                    listViewDauSach.Items.Add(docdulieu[0].ToString());
+                    listViewDauSach.Items[i].SubItems.Add(docdulieu[1].ToString());
+                    i++;
+               }
+               ketnoi.Close();
+          }
+
+          private void listViewDauSach_Click(object sender, EventArgs e)
+          {
+               txtMaDS.Text = listViewDauSach.SelectedItems[0].SubItems[0].Text;
+               txtTenDS.Text = listViewDauSach.SelectedItems[0].SubItems[1].Text;
+                //-------------- New
+
+               /// đưa dữ liệu vào panel sửa thông tin
+               comboBox_suaDS.Text = listViewDauSach.SelectedItems[0].SubItems[0].Text;
+               txt_SuaDS.Text = listViewDauSach.SelectedItems[0].SubItems[1].Text;
+               
+          }
+
+          private void btn_SuaDS_Click(object sender, EventArgs e)
+          {
+               ketnoi = new SqlConnection(chuoiketnoi);
+               ketnoi.Open();
+               try
+               {
+
+                    sql = "update DAUSACH set TENDAUSACH=N'" + txt_SuaDS.Text + "' where MADAUSACH ='" + comboBox_suaDS.Text + "'";
+
+                    thuchien = new SqlCommand(sql, ketnoi);
+                    thuchien.ExecuteNonQuery();
+               }
+               catch (Exception ex)
+               {
+                    //MessageBox.Show(ex.ToString());
+
+               }
+               finally
+               {
+                    DialogResult d = MessageBox.Show("Sửa thông tin thành công!", "Thông báo hệ thống", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    if (d == DialogResult.OK) panel_suadausach.Visible = false;
+               }
+               ketnoi.Close();
+               gb_TK_DS.Visible = true;
+          }
+
+          private void button15_Click(object sender, EventArgs e)
+          {
+               ketnoi = new SqlConnection(chuoiketnoi);
+               ketnoi.Open();
+               try
+               {
+
+                    sql = "INSERT INTO DAUSACH VALUES('" + txtThemMaDS.Text + "',N'" + txtThemTenDS.Text + "'";
+                    thuchien = new SqlCommand(sql, ketnoi);
+                    thuchien.ExecuteNonQuery();
+               }
+               catch (Exception ex)
+               {
+                    //MessageBox.Show(ex.ToString());
+               }
+               finally
+               {
+                    DialogResult d = MessageBox.Show("Thêm thành công.", "Thông báo hệ thống", MessageBoxButtons.OK, MessageBoxIcon.None);
+                    if (d == DialogResult.OK)
+                    {
+                         panel_themdausach.Visible = false;
+                    }
+               }
+               ketnoi.Close();
+               gb_TK_DS.Visible = true;
+          }
+
+          private void button20_Click(object sender, EventArgs e)
+          {
+               panel_themdausach.Visible = true;
+               panel_suadausach.Visible = false;
+          }
+
+          private void button19_Click(object sender, EventArgs e)
+          {
+               panel_themdausach.Visible = false;
+               panel_suadausach.Visible = true;
+          }
+
+          private void button18_Click(object sender, EventArgs e)
+          {
+               ketnoi = new SqlConnection(chuoiketnoi);
+               try
+               {
+                    ketnoi.Open();
+               }
+               catch (Exception exp)
+               {
+                    MessageBox.Show(exp.ToString());
+               }
+               finally
+               {
+                    DialogResult a = MessageBox.Show("Bạn muốn xóa học viên này?", "Thông báo hệ thống", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    if (a == DialogResult.Yes)
+                    {
+                         //sql = "delete from NHANVIEN where(MANV = '" + cbManv.Text + "')";
+                         sql = "delete DAUSACH WHERE MADAUSACH = '" + txtMaDS.Text + "'";
+                         thuchien = new SqlCommand(sql, ketnoi);
+                         thuchien.ExecuteNonQuery();
+                         DialogResult b = MessageBox.Show("Xóa thành công!", "Thông báo hệ thống", MessageBoxButtons.OK, MessageBoxIcon.None);
+                         if (b == DialogResult.OK)
+                         {
+                              ketnoi.Close();
+                         }
+                    }
+                    if (a == DialogResult.No)
+                    {
+                         ketnoi.Close();
+                    }
+               }
+          }
+
+          private void btn_CNDS_DS_Click_1(object sender, EventArgs e)
+          {
+               listViewDauSach.Parent = groupBox20;
+               HienthiDausach();
+          }
+
+          private void groupBox20_Enter(object sender, EventArgs e)
+          {
+
+          }
+
+          private void button16_Click(object sender, EventArgs e)
+          {
+               if (txtTimkiem.Text == null)
+               {
+                    MessageBox.Show("Lỗi tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               }
+               else
+               {
+                    if (cbDanhmucTK.Text == cbDanhmucTK.Items[0].ToString())   // Tìm kiếm theo mã
+                    {
+
+                         sql = "SELECT* FROM TK_DAUSACH(1, '" + txt_TK_DauSach.Text + "')";
+                    }
+                    if (cbDanhmucTK.Text == cbDanhmucTK.Items[1].ToString())                 // Tìm kiếm theo tên
+                    {
+
+                         sql = "SELECT* FROM TK_DAUSACH(2, '" + txt_TK_DauSach.Text + "')";
+                    }   // Tìm kiếm theo tên
+                    
+                    listViewDSHV.Items.Clear();
+                    ketnoi = new SqlConnection(chuoiketnoi);
+                    ketnoi.Open();
+                    thuchien = new SqlCommand(sql, ketnoi);
+                    docdulieu = thuchien.ExecuteReader();
+                    i = 0;
+                    while (docdulieu.Read())
+                    {
+                         
+                         listViewDSHV.Items.Add(docdulieu[0].ToString());
+                         listViewDSHV.Items[i].SubItems.Add(docdulieu[1].ToString());
+                         
+                         i++;
+                    }
+                    ketnoi.Close();
+               }
+          }
+     }
 }
