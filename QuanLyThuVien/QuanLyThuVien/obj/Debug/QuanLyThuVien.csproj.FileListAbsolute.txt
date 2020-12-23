@@ -23,7 +23,6 @@ C:\Users\KNV\Desktop\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\bin\Debug\QuanLyT
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\bin\Debug\QuanLyThuVien.exe.config
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\bin\Debug\QuanLyThuVien.exe
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\bin\Debug\QuanLyThuVien.pdb
-C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\obj\Debug\QuanLyThuVien.csprojAssemblyReference.cache
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\obj\Debug\QuanLyThuVien.Form1.resources
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\obj\Debug\QuanLyThuVien.Form2.resources
 C:\Users\ADMIN\Desktop\GitHub\QuanLyThuVien\QuanLyThuVien\QuanLyThuVien\obj\Debug\QuanLyThuVien.Properties.Resources.resources
